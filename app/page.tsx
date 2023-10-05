@@ -1,4 +1,4 @@
-import MaxWidthWrapper from '@/components/shared/MaxWidthWrapper'
+import MaxWidthWrapper from '@/components/layout/MaxWidthWrapper'
 import { buttonVariants } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
