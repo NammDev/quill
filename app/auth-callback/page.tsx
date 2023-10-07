@@ -22,7 +22,7 @@ const Page = () => {
         router.push('/sign-in')
       }
     },
-    retry: true,
+    retry: false,
     retryDelay: 500,
   })
 
