@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import UploadButton from './UploadButton'
 import { trpc } from '@/app/_trpc/client'
 import { Ghost, Loader2, MessageSquare, Plus, Trash } from 'lucide-react'
@@ -10,13 +10,25 @@ import { Button } from '../ui/button'
 import { format } from 'date-fns'
 
 const Dashboard = () => {
+  const [currentlyDeletingFile, setCurrentlyDeletingFile] = useState<string | null>(null)
+  const utils = trpc.useContext()
+
   const { data: files, isLoading } = trpc.getUserFiles.useQuery()
 
-  const currentlyDeletingFile = 'true'
-
-  const deleteFile = ({ id }: any) => {
-    console.log(`delete file ${id}`)
-  }
+  const { mutate: deleteFile } = trpc.deleteFile.useMutation({
+    // api route has resolve sucessfully
+    onSuccess: () => {
+      utils.getUserFiles.invalidate()
+    },
+    // when click button right away
+    onMutate({ id }) {
+      setCurrentlyDeletingFile(id)
+    },
+    // error or success
+    onSettled() {
+      setCurrentlyDeletingFile(null)
+    },
+  })
 
   return (
     <main className='mx-auto max-w-7xl md:p-10'>
