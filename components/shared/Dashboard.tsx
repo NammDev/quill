@@ -4,6 +4,7 @@ import React from 'react'
 import UploadButton from './UploadButton'
 import { trpc } from '@/app/_trpc/client'
 import { Ghost } from 'lucide-react'
+import Skeleton from 'react-loading-skeleton'
 
 const Dashboard = () => {
   const { data: files, isLoading } = trpc.getUserFiles.useQuery()
@@ -19,7 +20,7 @@ const Dashboard = () => {
       {files && files.length !== 0 ? (
         <p>File</p>
       ) : isLoading ? (
-        <p>Loading</p>
+        <Skeleton height={100} className='my-2' count={3} />
       ) : (
         <div className='flex flex-col items-center gap-2 mt-16'>
           <Ghost className='w-8 h-8 text-zinc-800' />

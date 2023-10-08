@@ -1,10 +1,12 @@
 import { cn } from '@/lib/utils'
-import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Toaster } from '@/components/ui/toaster'
 import Navbar from '@/components/layout/Navbar'
 import Providers from '@/components/layout/Providers'
+
+import './globals.css'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
