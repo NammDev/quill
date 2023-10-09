@@ -77,7 +77,7 @@ const UploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
     >
       {({ getRootProps, getInputProps, acceptedFiles }) => (
         <div
-          {...getRootProps()}
+          {...getRootProps({ onClick: (evt) => evt.preventDefault() })}
           className='h-64 m-4 border border-gray-300 border-dashed rounded-lg'
         >
           <div className='flex items-center justify-center w-full h-full'>
