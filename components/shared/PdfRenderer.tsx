@@ -22,6 +22,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import SimpleBar from 'simplebar-react'
+import PdfFullscreen from './PdfFullscreen'
 
 interface PdfRendererProps {
   url: string
@@ -125,7 +126,7 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
             <RotateCw className='w-4 h-4' />
           </Button>
 
-          {/* <PdfFullscreen fileUrl={url} /> */}
+          <PdfFullscreen fileUrl={url} />
         </div>
       </div>
 
