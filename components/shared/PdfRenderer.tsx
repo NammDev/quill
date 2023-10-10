@@ -72,7 +72,7 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
             variant='ghost'
             aria-label='previous page'
           >
-            <ChevronDown className='w-4 h-4' />
+            <ChevronUp className='w-4 h-4' />
           </Button>
 
           <div className='flex items-center gap-1.5'>
@@ -100,7 +100,7 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
               setValue('page', String(currPage + 1))
             }}
           >
-            <ChevronUp className='w-4 h-4' />
+            <ChevronDown className='w-4 h-4' />
           </Button>
         </div>
 
@@ -163,20 +163,22 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
                 />
               ) : null}
 
-              <Page
-                className={cn(isLoading ? 'hidden' : '')}
-                width={width ? width : 1}
-                pageNumber={currPage}
-                scale={scale}
-                rotate={rotation}
-                key={'@' + scale}
-                loading={
-                  <div className='flex justify-center'>
-                    <Loader2 className='w-6 h-6 my-24 animate-spin' />
-                  </div>
-                }
-                onRenderSuccess={() => setRenderedScale(scale)}
-              />
+              {new Array(numPages).fill(0).map((_, i) => (
+                <Page
+                  className={cn(isLoading ? 'hidden' : '')}
+                  width={width ? width : 1}
+                  pageNumber={i + currPage}
+                  scale={scale}
+                  rotate={rotation}
+                  key={i + '@' + scale}
+                  loading={
+                    <div className='flex justify-center'>
+                      <Loader2 className='w-6 h-6 my-24 animate-spin' />
+                    </div>
+                  }
+                  onRenderSuccess={() => setRenderedScale(scale)}
+                />
+              ))}
             </Document>
           </div>
         </SimpleBar>
