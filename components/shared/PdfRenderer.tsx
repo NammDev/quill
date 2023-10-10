@@ -1,10 +1,7 @@
 'use client'
 
 import { ChevronDown, ChevronUp, Loader2, RotateCw, Search } from 'lucide-react'
-
-import 'react-pdf/dist/Page/AnnotationLayer.css'
-import 'react-pdf/dist/Page/TextLayer.css'
-
+import { Document, Page, pdfjs } from 'react-pdf'
 import { cn } from '@/lib/utils'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
@@ -14,6 +11,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
+import 'react-pdf/dist/Page/AnnotationLayer.css'
+import 'react-pdf/dist/Page/TextLayer.css'
 
 interface PdfRendererProps {
   url: string
@@ -66,7 +67,21 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
         </div>
       </div>
 
-      <div className='flex-1 w-full max-h-screen'></div>
+      <div className='flex-1 w-full max-h-screen'>
+        <div>
+          <Document
+            file={url}
+            className='max-h-full'
+            loading={
+              <div className='flex justify-center'>
+                <Loader2 className='w-6 h-6 my-24 animate-spin' />
+              </div>
+            }
+          >
+            <Page pageNumber={1} />
+          </Document>
+        </div>
+      </div>
     </div>
   )
 }
