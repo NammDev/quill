@@ -18,6 +18,9 @@ import 'react-pdf/dist/Page/TextLayer.css'
 import { useToast } from '../ui/use-toast'
 import { useResizeDetector } from 'react-resize-detector'
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 interface PdfRendererProps {
   url: string
@@ -28,6 +31,27 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
   const { width, ref } = useResizeDetector()
   const [numPages, setNumPages] = useState<number>()
   const [currPage, setCurrPage] = useState<number>(1)
+
+  const CustomPageValidator = z.object({
+    page: z.string().refine((num) => Number(num) > 0 && Number(num) <= numPages!),
+  })
+  type TCustomePageValidator = z.infer<typeof CustomPageValidator>
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm<TCustomePageValidator>({
+    defaultValues: { page: '1' },
+    resolver: zodResolver(CustomPageValidator),
+  })
+
+  const handlePageSubmit = ({ page }: TCustomePageValidator) => {
+    setCurrPage(Number(page))
+    setValue('page', String(page))
+  }
+
   return (
     <div className='flex flex-col items-center w-full bg-white rounded-md shadow'>
       <div className='flex items-center justify-between w-full px-2 border-b h-14 border-zinc-200'>
@@ -36,7 +60,7 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
             disabled={currPage <= 1}
             onClick={() => {
               setCurrPage((prev) => (prev - 1 > 1 ? prev - 1 : 1))
-              // setValue('page', String(currPage - 1))
+              setValue('page', String(currPage - 1))
             }}
             variant='ghost'
             aria-label='previous page'
@@ -45,7 +69,15 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
           </Button>
 
           <div className='flex items-center gap-1.5'>
-            <Input className={cn('w-12 h-8')} />
+            <Input
+              {...register('page')}
+              className={cn('w-12 h-8', errors.page && 'focus-visible:ring-red-500')}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSubmit(handlePageSubmit)()
+                }
+              }}
+            />
             <p className='space-x-1 text-sm text-zinc-700'>
               <span>/</span>
               <span>{numPages ?? 'x'}</span>
@@ -58,7 +90,7 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
             disabled={numPages === undefined || currPage === numPages}
             onClick={() => {
               setCurrPage((prev) => (prev + 1 > numPages! ? numPages! : prev + 1))
-              // setValue('page', String(currPage + 1))
+              setValue('page', String(currPage + 1))
             }}
           >
             <ChevronUp className='w-4 h-4' />
