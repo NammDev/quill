@@ -29,6 +29,8 @@ interface PdfRendererProps {
 const PdfRenderer = ({ url }: PdfRendererProps) => {
   const { toast } = useToast()
   const { width, ref } = useResizeDetector()
+  const [scale, setScale] = useState<number>(1)
+  const [rotation, setRotation] = useState<number>(0)
   const [numPages, setNumPages] = useState<number>()
   const [currPage, setCurrPage] = useState<number>(1)
 
@@ -102,19 +104,23 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
             <DropdownMenuTrigger asChild>
               <Button className='gap-1.5' aria-label='zoom' variant='ghost'>
                 <Search className='w-4 h-4' />
-                {100}%
+                {scale * 100}%
                 <ChevronDown className='w-3 h-3 opacity-50' />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem>100%</DropdownMenuItem>
-              <DropdownMenuItem>150%</DropdownMenuItem>
-              <DropdownMenuItem>200%</DropdownMenuItem>
-              <DropdownMenuItem>250%</DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => setScale(1)}>100%</DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => setScale(1.5)}>150%</DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => setScale(2)}>200%</DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => setScale(2.5)}>250%</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Button variant='ghost' aria-label='rotate 90 degrees'>
+          <Button
+            onClick={() => setRotation((prev) => prev + 90)}
+            variant='ghost'
+            aria-label='rotate 90 degrees'
+          >
             <RotateCw className='w-4 h-4' />
           </Button>
 
@@ -141,7 +147,7 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
             }}
             onLoadSuccess={({ numPages }) => setNumPages(numPages)}
           >
-            <Page width={width ? width : 1} pageNumber={currPage} />
+            <Page scale={scale} width={width ? width : 1} pageNumber={currPage} rotate={rotation} />
           </Document>
         </div>
       </div>
