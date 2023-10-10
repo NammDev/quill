@@ -21,6 +21,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import SimpleBar from 'simplebar-react'
 
 interface PdfRendererProps {
   url: string
@@ -129,27 +130,34 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
       </div>
 
       <div className='flex-1 w-full max-h-screen'>
-        <div ref={ref}>
-          <Document
-            file={url}
-            className='max-h-full'
-            loading={
-              <div className='flex justify-center'>
-                <Loader2 className='w-6 h-6 my-24 animate-spin' />
-              </div>
-            }
-            onLoadError={() => {
-              toast({
-                title: 'Error loading PDF',
-                description: 'Please try again later',
-                variant: 'destructive',
-              })
-            }}
-            onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-          >
-            <Page scale={scale} width={width ? width : 1} pageNumber={currPage} rotate={rotation} />
-          </Document>
-        </div>
+        <SimpleBar autoHide={false} className='max-h-[calc(100vh-10rem)]'>
+          <div ref={ref}>
+            <Document
+              file={url}
+              className='max-h-full'
+              loading={
+                <div className='flex justify-center'>
+                  <Loader2 className='w-6 h-6 my-24 animate-spin' />
+                </div>
+              }
+              onLoadError={() => {
+                toast({
+                  title: 'Error loading PDF',
+                  description: 'Please try again later',
+                  variant: 'destructive',
+                })
+              }}
+              onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+            >
+              <Page
+                scale={scale}
+                width={width ? width : 1}
+                pageNumber={currPage}
+                rotate={rotation}
+              />
+            </Document>
+          </div>
+        </SimpleBar>
       </div>
     </div>
   )
