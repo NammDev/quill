@@ -9,31 +9,50 @@ import { openai } from '@/lib/openai'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
 
 export const POST = async (req: NextRequest) => {
-  // endpoint for asking question to a pdf file
+  // endpoint for asking a question to a pdf file
   const body = await req.json()
 
   const { getUser } = getKindeServerSession()
   const user = getUser()
+
   const { id: userId } = user
+
   if (!userId) return new Response('Unauthorized', { status: 401 })
 
   const { fileId, message } = SendMessageValidator.parse(body)
-  const file = await db.file.findFirst({ where: { id: fileId, userId } })
-  if (!file) return new Response('Not Found', { status: 404 })
 
-  // add question to database
-  await db.message.create({ data: { text: message, isUserMessage: true, userId, fileId } })
+  const file = await db.file.findFirst({
+    where: {
+      id: fileId,
+      userId,
+    },
+  })
 
-  // vectorize message
-  const pineconeIndex = pinecone.Index('quill')
+  if (!file) return new Response('Not found', { status: 404 })
+
+  await db.message.create({
+    data: {
+      text: message,
+      isUserMessage: true,
+      userId,
+      fileId,
+    },
+  })
+
+  // 1: vectorize message
   const embeddings = new OpenAIEmbeddings({
     openAIApiKey: process.env.OPENAI_API_KEY,
   })
+
+  const pineconeIndex = pinecone.Index('quill')
+
   const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
     pineconeIndex,
     namespace: file.id,
   })
+
   const results = await vectorStore.similaritySearch(message, 4)
+
   const prevMessages = await db.message.findMany({
     where: { fileId },
     orderBy: { createdAt: 'asc' },
@@ -46,7 +65,7 @@ export const POST = async (req: NextRequest) => {
   }))
 
   const response = await openai.chat.completions.create({
-    model: 'gpt-3.5-turbo',
+    model: 'gpt-3.5-turbo-16k',
     temperature: 0,
     stream: true,
     messages: [
