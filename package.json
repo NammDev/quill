@@ -11,6 +11,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
     "@kinde-oss/kinde-auth-nextjs": "^1.8.22",
+    "@mantine/hooks": "^7.1.2",
     "@pinecone-database/pinecone": "^1.1.1",
     "@prisma/client": "^5.4.1",
     "@radix-ui/react-avatar": "^1.0.4",
@@ -41,6 +42,7 @@
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.47.0",
     "react-loading-skeleton": "^3.3.1",
+    "react-markdown": "^9.0.0",
     "react-pdf": "^7.5.0",
     "react-resize-detector": "^9.1.0",
     "react-textarea-autosize": "^8.5.3",
