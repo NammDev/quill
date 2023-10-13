@@ -109,8 +109,8 @@ const Page = () => {
                         <TooltipTrigger className='cursor-default ml-1.5'>
                           <HelpCircle className='w-4 h-4 text-zinc-500' />
                         </TooltipTrigger>
-                        <TooltipContent className='p-2 w-80'>
-                          How many PDFs you can upload per month.
+                        <TooltipContent className='p-2 w-60'>
+                          PDFs you can upload per month.
                         </TooltipContent>
                       </Tooltip>
                     </div>
@@ -165,7 +165,6 @@ const Page = () => {
                         })}
                       >
                         {user ? 'Dashboard' : 'Sign up'}
-                        <ArrowRight className='h-5 w-5 ml-1.5' />
                       </Link>
                     ) : user ? (
                       <UpgradeButton />
@@ -177,7 +176,6 @@ const Page = () => {
                         })}
                       >
                         {user ? 'Upgrade now' : 'Sign up'}
-                        <ArrowRight className='h-5 w-5 ml-1.5' />
                       </Link>
                     )}
                   </div>
