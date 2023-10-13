@@ -12,6 +12,7 @@ import { Button } from '../ui/button'
 import { Avatar, AvatarFallback } from '../ui/avatar'
 import { Icons } from '../shared/Icon'
 import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs/server'
+import { getUserSubscriptionPlan } from '@/lib/stripe'
 
 interface UserAccountNavProps {
   email: string | undefined
@@ -20,7 +21,7 @@ interface UserAccountNavProps {
 }
 
 const UserAccountNav = async ({ email, imageUrl, name }: UserAccountNavProps) => {
-  //   const subscriptionPlan = await getUserSubscriptionPlan()
+  const subscriptionPlan = await getUserSubscriptionPlan()
 
   return (
     <DropdownMenu>
@@ -56,13 +57,11 @@ const UserAccountNav = async ({ email, imageUrl, name }: UserAccountNavProps) =>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
-          {/* {subscriptionPlan?.isSubscribed ? (
+          {subscriptionPlan?.isSubscribed ? (
             <Link href='/dashboard/billing'>Manage Subscription</Link>
           ) : (
-            <Link href='/pricing'>
-              Upgrade <Gem className='text-blue-600 h-4 w-4 ml-1.5' />
-            </Link>
-          )} */}
+            <Link href='/pricing'>Upgrade</Link>
+          )}
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
