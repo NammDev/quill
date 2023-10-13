@@ -24,7 +24,7 @@ export default function Home() {
             size: 'lg',
             className: 'mt-5',
           })}
-          href='/dashboard'
+          href='/sign-in'
           target='_blank'
         >
           Get started <ArrowRight className='w-5 h-5 ml-2' />
