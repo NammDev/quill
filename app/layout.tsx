@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import { Toaster } from '@/components/ui/toaster'
 import Navbar from '@/components/layout/Navbar'
 import Providers from '@/components/layout/Providers'
+import { Analytics } from '@vercel/analytics/react'
 
 import './globals.css'
 import 'react-loading-skeleton/dist/skeleton.css'
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Toaster />
           <Navbar />
           {children}
+          <Analytics />
         </body>
       </Providers>
     </html>
