@@ -56,7 +56,7 @@ const BillingForm = ({ subscriptionPlan }: BillingFormProps) => {
               <p className='text-xs font-medium rounded-full'>
                 {subscriptionPlan.isCanceled
                   ? 'Your plan will be canceled on '
-                  : 'Your plan renews on'}
+                  : 'Your plan renews on '}
                 {format(subscriptionPlan.stripeCurrentPeriodEnd!, 'dd.MM.yyyy')}.
               </p>
             ) : null}
