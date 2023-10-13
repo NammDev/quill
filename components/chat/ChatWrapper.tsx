@@ -7,6 +7,7 @@ import { buttonVariants } from '../ui/button'
 import Messages from './Messages'
 import ChatInput from './ChatInput'
 import { ChatContextProvider } from './ChatContext'
+import { PLANS } from '@/config/stripe'
 
 interface ChatWrapperProps {
   fileId: string
@@ -61,9 +62,9 @@ const ChatWrapper = ({ fileId, isSubscribed }: ChatWrapperProps) => {
             <p className='text-sm text-zinc-500'>
               Your <span className='font-medium'>{isSubscribed ? 'Pro' : 'Free'}</span> plan
               supports up to{' '}
-              {/* {isSubscribed
+              {isSubscribed
                 ? PLANS.find((p) => p.name === 'Pro')?.pagesPerPdf
-                : PLANS.find((p) => p.name === 'Free')?.pagesPerPdf}{' '} */}
+                : PLANS.find((p) => p.name === 'Free')?.pagesPerPdf}{' '}
               pages per PDF.
             </p>
             <Link

@@ -8,8 +8,11 @@ import Skeleton from 'react-loading-skeleton'
 import Link from 'next/link'
 import { Button } from '../ui/button'
 import { format } from 'date-fns'
-
-const Dashboard = () => {
+import { getUserSubscriptionPlan } from '@/lib/stripe'
+interface PageProps {
+  subscriptionPlan: Awaited<ReturnType<typeof getUserSubscriptionPlan>>
+}
+const Dashboard = ({ subscriptionPlan }: PageProps) => {
   const [currentlyDeletingFile, setCurrentlyDeletingFile] = useState<string | null>(null)
   const utils = trpc.useContext()
 
@@ -34,7 +37,7 @@ const Dashboard = () => {
     <main className='mx-auto max-w-7xl md:p-10'>
       <div className='flex flex-col items-start justify-between gap-4 pb-5 mt-8 border-b border-gray-200 sm:flex-row sm:items-center sm:gap-0'>
         <h1 className='mb-3 text-5xl font-bold text-gray-900'>My Files</h1>
-        <UploadButton isSubscribed={true} />
+        <UploadButton isSubscribed={subscriptionPlan.isSubscribed} />
       </div>
 
       {/* display all user files */}
