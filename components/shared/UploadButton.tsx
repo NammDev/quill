@@ -53,8 +53,8 @@ const UploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
         const res = await startUpload(acceptedFile)
         if (!res) {
           return toast({
-            title: 'Something went wrong',
-            description: 'Please try again later',
+            title: 'Xảy ra sự cố khi upload file!',
+            description: 'Website chỉ đọc được những file sau: .pdf, .doc, .docx',
             variant: 'destructive',
           })
         }
@@ -64,7 +64,7 @@ const UploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
         if (!key) {
           return toast({
             title: 'Something went wrong',
-            description: 'Please try again later',
+            description: 'Try again later',
             variant: 'destructive',
           })
         }
